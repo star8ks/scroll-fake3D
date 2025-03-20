@@ -1,0 +1,40 @@
+{
+  "name": "three-js-web-basic-clouden",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.tsx",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "image-processing": "npx ts-node scripts/image_processing.ts"
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.70.0",
+    "@react-three/fiber": "^8.13.6",
+    "dotenv": "^16.4.7",
+    "gyronorm": "^2.0.6",
+    "next": "^13.4.19",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scroll": "^1.9.3",
+    "three": "^0.154.0",
+    "three-mesh-bvh": "0.5.24"
+  },
+  "devDependencies": {
+    "@types/gyronorm": "^2.0.4",
+    "@types/node": "^20.4.2",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.7",
+    "@types/react-scroll": "^1.8.10",
+    "@types/three": "^0.174.0",
+    "eslint": "^8.48.0",
+    "eslint-config-next": "^13.4.19",
+    "prettier": "^3.0.0",
+    "raw-loader": "^4.0.2",
+    "replicate": "^1.0.1",
+    "typescript": "^5.1.6"
+  },
+  "keywords": []
+}

@@ -1,0 +1,55 @@
+.container {
+  width: 100%;
+}
+
+.scrollSequenceContainer {
+  position: relative;
+  height: 100vh; /* Full viewport height for the scroll sequence */
+  overflow: hidden;
+}
+
+.appleContainer {
+  /* Add specific styles for apple container if needed */
+}
+
+.treeContainer {
+  /* Add specific styles for tree container if needed */
+}
+
+.scrollSequenceContent {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none; /* Ensure content doesn't block scroll events */
+  z-index: 1; /* Ensure content is above Canvas */
+}
+
+.speak {
+  text-align: center;
+  margin: 20px 0;
+  color: white; /* Adjust text color as needed */
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+}
+
+.additionalSection {
+  width: 50vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white; /* Text color */
+  text-align: center;
+}
+
+.fake3dWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+} 
