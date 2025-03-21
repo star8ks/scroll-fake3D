@@ -3,15 +3,15 @@ import { useState, useEffect, useRef } from 'react';
 export interface GyroData {
   x: number;
   y: number;
+  permissionGranted: boolean;
 }
 
-// 单例存储
-let globalGyroData: GyroData = { x: 0, y: 0 };
+// singleton storage
+let globalGyroData: GyroData = { x: 0, y: 0, permissionGranted: false };
 let listeners = new Set<() => void>();
 
 export default function useGyro(maxTilt = 15) {
   const [gyroData, setGyroData] = useState<GyroData>(globalGyroData);
-  const [permissionGranted, setPermissionGranted] = useState<boolean | null>(null);
   const initialOrientation = useRef<{ beta: number; gamma: number } | null>(null);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function useGyro(maxTilt = 15) {
       const x = clamp(deltaX, -maxTilt, maxTilt) / maxTilt;
       const y = -clamp(deltaY, -maxTilt, maxTilt) / maxTilt;
       
-      globalGyroData = { x, y };
+      globalGyroData = { ...globalGyroData, x, y };
       listeners.forEach(fn => fn());
     };
 
@@ -49,22 +49,26 @@ export default function useGyro(maxTilt = 15) {
       const requestPermissionFn = (DeviceOrientationEvent as any).requestPermission;
       if (typeof requestPermissionFn === 'function') {
         try {
+          console.log('Requesting permission');
           // iOS 13+ requires explicit permission
           const permission = await requestPermissionFn();
           if (permission === 'granted') {
-            setPermissionGranted(true);
+            console.log('Permission granted');
+            globalGyroData = { ...globalGyroData, permissionGranted: true };
             window.addEventListener('deviceorientation', handleOrientation);
           } else {
-            setPermissionGranted(false);
+            console.log('Permission denied');
+            globalGyroData = { ...globalGyroData, permissionGranted: false };
             console.log('Gyroscope permission denied');
           }
         } catch (error) {
-          setPermissionGranted(false);
+          console.log('Device orientation supported on this device');
+          globalGyroData = { ...globalGyroData, permissionGranted: false };
           console.log('Error requesting gyroscope permission', error);
         }
       } else {
         // Non-iOS devices or older iOS versions don't need permission
-        setPermissionGranted(true);
+        globalGyroData = { ...globalGyroData, permissionGranted: true };
         window.addEventListener('deviceorientation', handleOrientation);
       }
     };

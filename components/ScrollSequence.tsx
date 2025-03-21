@@ -17,7 +17,7 @@ const ScrollSequence: React.FC<ScrollSequenceProps> = ({
   playbackSpeed = 1,
 }) => {
   const [currentFrame, setCurrentFrame] = useState(0);
-  const { x, y } = useContext(GyroContext);
+  const { x, y, permissionGranted } = useContext(GyroContext);
 
 
   const handleScroll = () => {
@@ -51,7 +51,8 @@ const ScrollSequence: React.FC<ScrollSequenceProps> = ({
       <div style={{ position: 'absolute', top: 0, left: 0, color: 'black', zIndex: 1000 }}>
         {currentFrame}<br/>
         {x}<br/>
-        {y}
+        {y}<br/>
+        {permissionGranted ? 'true' : 'false'}
       </div>
       <ThreeCanvas>
         {/* <GrayscaleTexture key={currentFrame} imageUrl={`${imagesRoot}${images[currentFrame]}`} /> */}
