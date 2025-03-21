@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Canvas as ThreeCanvas } from '@react-three/fiber';
-import Fake3DTexture from './Fake3DTexture';
+import EnhancedFake3D from './EnhancedFake3D';
+import { GyroContext } from '../app/providers';
 
 interface ScrollSequenceProps {
   images: string[];
   imagesRoot: string;
+  imagesDepthRoot: string;
   playbackSpeed?: number;
 }
 
 const ScrollSequence: React.FC<ScrollSequenceProps> = ({
   images,
   imagesRoot,
+  imagesDepthRoot,
   playbackSpeed = 1,
 }) => {
   const [currentFrame, setCurrentFrame] = useState(0);
+  const { x, y } = useContext(GyroContext);
+
 
   const handleScroll = () => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -43,15 +48,20 @@ const ScrollSequence: React.FC<ScrollSequenceProps> = ({
       zIndex: -1,
       pointerEvents: 'none',
     }}>
-      <div style={{ position: 'absolute', top: 0, left: 0, color: 'white', zIndex: 1000 }}>
-        {currentFrame}
+      <div style={{ position: 'absolute', top: 0, left: 0, color: 'black', zIndex: 1000 }}>
+        {currentFrame}<br/>
+        {x}<br/>
+        {y}
       </div>
       <ThreeCanvas>
         {/* <GrayscaleTexture key={currentFrame} imageUrl={`${imagesRoot}${images[currentFrame]}`} /> */}
-        <Fake3DTexture 
-          key={currentFrame} 
+        <EnhancedFake3D 
+          key={currentFrame}
+          useGyroscope
+          horizontalThreshold={140.0}
+          verticalThreshold={150.0}
           imageUrl={`${imagesRoot}${images[currentFrame]}`} 
-          depthUrl={`${imagesRoot}${images[currentFrame].replace(/\.(jpg|jpeg|webp|png)$/i, '_depth.$1')}`}
+          depthUrl={`${imagesDepthRoot}${images[currentFrame].replace(/\.(jpg|jpeg|webp|png)$/i, '.$1')}`}
         />
       </ThreeCanvas>
     </div>
