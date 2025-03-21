@@ -7,7 +7,7 @@ import * as THREE from "three";
 import { PerspectiveCamera } from "@react-three/drei";
 import vertexShader from "./shaders/fake3d.vert";
 import fragmentShader from "./shaders/fake3d.frag";
-import { GyroContext } from "../app/providers";
+import { GyroContext, MouseContext } from "../app/providers";
 
 interface IFake3DProps {
   imageUrl: string;
@@ -46,7 +46,8 @@ const Fake3DPlane: React.FC<Omit<IFake3DProps, "className" | "style">> = ({
 
   // use gyroscope hook (if enabled)
   const gyroData = useGyroscope ? useContext(GyroContext) : { x: 0, y: 0 };
-
+  const mouseData = useContext(MouseContext);
+  
   // set texture
   useEffect(() => {
     if (originalTexture && depthTexture) {
@@ -58,22 +59,11 @@ const Fake3DPlane: React.FC<Omit<IFake3DProps, "className" | "style">> = ({
 
   // handle mouse move
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const halfX = window.innerWidth / 2;
-      const halfY = window.innerHeight / 2;
-
-      mouseTarget.current = {
-        x: (halfX - e.clientX) / halfX,
-        y: (halfY - e.clientY) / halfY,
-      };
+    mouseTarget.current = {
+      x: mouseData.x,
+      y: mouseData.y,
     };
-
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
+  }, [mouseData]);
 
   // 更新陀螺仪数据
   useEffect(() => {
